@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2014 The Android Open Source Project
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<resources>
+
+    <string name="menu_refresh">Refresh</string>
+
+    <string name="menu_color_scheme">Color scheme</string>
+    <string name="menu_color_scheme_1">Scheme #1</string>
+    <string name="menu_color_scheme_2">Scheme #2</string>
+    <string name="menu_color_scheme_3">Scheme #3</string>
+
+    <!-- evernote sample -->
+    <string name="err_creating_note">Error creating new Evernote note</string>
+    <string name="msg_image_saved">Image saved to Evernote</string>
+    <string name="label_app_title">Evernote EDAM Android Demo</string>
+    <string name="label_select_button">Select Image</string>
+    <string name="label_message">No image selected</string>
+    <string name="label_save_button">Save</string>
+    <string name="err_image_selected">Select Image</string>
+    <string name="err_retrieving_resource">Error retrieving resource</string>
+    <string name="msg_retrieved_resource">Retrieved resource from server</string>
+    <string name="esdk__loading">Loading...</string>
+    <string name="esdk__pick_notebook">Pick a notebook</string>
+    <string name="label_login">Login</string>
+    <string name="label_logout">Sign out</string>
+    <string name="esdk__image_picker">Image Picker</string>
+    <string name="esdk__simple_note">Simple Note</string>
+    <string name="label_select_notebook_button">Select Notebook</string>
+    <string name="title">Note Title</string>
+    <string name="content">Note Content</string>
+    <string name="empty_content_error">Note title and content cannot be empty</string>
+    <string name="note_saved">Note saved to Evernote</string>
+    <string name="ok">Ok</string>
+    <string name="simple_note">Simplenote</string>
+    <string name="image_picker">Image Picker</string>
+    <string name="error_listing_notebooks">Error listing notebooks</string>
+    <string name="error_creating_notestore">Error creating notestore</string>
+    <string name="error_saving_note">Error saving note</string>
+</resources>
