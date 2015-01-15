@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.evernote.client.android.EvernoteSession;
+import com.evernote.client.android.InvalidAuthenticationException;
 import com.example.android.swiperefreshlistfragment.R;
 
 /**
@@ -82,7 +83,7 @@ public class HelloEverNoteActivity extends ParentActivity {
 
         mLoginButton = (Button) findViewById(R.id.login);
         mLogoutButton = (Button) findViewById(R.id.logout);
-        mListView = (ListView) findViewById(R.id.list);
+        mListView = (ListView) findViewById(R.id.listView1);
         mAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
@@ -126,7 +127,12 @@ public class HelloEverNoteActivity extends ParentActivity {
      * Clears Evernote Session and logs out
      */
     public void logout(View view) {
-        mEvernoteSession.logOut(this);
+        try {
+            mEvernoteSession.logOut(this);
+        } catch (InvalidAuthenticationException e) {
+            // TODO: あとで
+            e.printStackTrace();
+        }
         updateAuthUi();
     }
 

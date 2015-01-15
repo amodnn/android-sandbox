@@ -31,10 +31,20 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme">
 
+        <!-- Evernote -->
         <activity
             android:name="com.evernote.client.android.EvernoteOAuthActivity"
             android:configChanges="orientation|keyboardHidden" />
 
+        <activity android:name="com.example.android.swiperefreshlistfragment.TopActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
         <activity android:name="com.example.android.sample.HelloEverNoteActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -42,6 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
 
         <activity
             android:name="com.example.android.sample.ImagePickerActivity"

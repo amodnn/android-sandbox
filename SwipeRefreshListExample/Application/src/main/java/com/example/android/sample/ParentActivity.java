@@ -69,7 +69,7 @@ public class ParentActivity extends Activity {
         mEvernoteSession = EvernoteSession.getInstance(this,
                 getString(R.string.consumer_key),
                 getString(R.string.consumer_secret),
-                EVERNOTE_SERVICE);
+                EVERNOTE_SERVICE, false);
     }
 
     // using createDialog, could use Fragments instead
