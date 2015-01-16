@@ -1,1 +1,1 @@
-include 'java-web', 'hello'
+include 'java-web', 'hello', 'java-app'
