@@ -1,0 +1,6 @@
+// << はhello.leftShift()の省略形
+task hello << {
+	// メソッド呼び出しの()は省略できる（ただし引数なしはNG、またメソッド入れ子もNG）
+	println 'Hello Gradle world!'
+}
+
