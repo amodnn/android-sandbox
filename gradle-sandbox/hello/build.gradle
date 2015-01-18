@@ -2,5 +2,108 @@
 task hello << {
 	// メソッド呼び出しの()は省略できる（ただし引数なしはNG、またメソッド入れ子もNG）
 	println 'Hello Gradle world!'
+
+    delete 'dummy.txt'
+    mkdir 'hoge'
 }
 
+// FileCollection
+task fileSample << {
+
+    FileCollection tempCollection = files('file1.txt', 'file2.txt', 'index.html')
+    assert tempCollection.files.size() == 3
+
+    FileCollection textFiles = tempCollection.filter { collectionFile ->
+        collectionFile.name.endsWith '.txt'
+    }
+
+    assert textFiles.files.size() == 2
+
+    println textFiles.getAsPath()
+}
+
+task fileTree1 << {
+    // FileTree
+    println '--- FileTree START ---'
+
+    FileTree gradleTree = fileTree('.gradle')
+
+    gradleTree.each { println it.name }
+
+    println '--- include START ---'
+
+    FileTree binFiles = gradleTree.include('**/*.bin')
+    binFiles.each { println it.name }
+
+    println '--- exclude START ---'
+    FileTree treeFiles = gradleTree.exclude('**/taskArtifacts.bin')
+    treeFiles.each { println it.name }
+}
+
+task fileTree2 << {
+    // FileTree
+    println '--- FileTree1 START ---'
+    // クロージャ版
+    FileTree gradleTree1 = fileTree('.gradle') {
+        include '**/*.bin'
+        exclude '**/taskArtifacts.bin'
+    }
+    gradleTree1.each { println it.name }
+
+    println '--- FileTree2 START ---'
+    // マップ版
+    FileTree gradleTree2 = fileTree(dir: '.gradle',
+            include: '**/*.bin',
+            exclude: '**/fileSnapshots.bin'
+    )
+    gradleTree2.each { println it.name }
+}
+
+task fileTreeVisit << {
+    // FileTree
+    FileTree tree = fileTree('.gradle')
+    tree.visit { fileDetails ->
+        println 'name: ' + fileDetails.getName()
+        if (fileDetails.isDirectory()) {
+            println 'path: ' + fileDetails.getPath()
+        } else {
+            println 'file size: ' + fileDetails.getSize()
+        }
+    }
+}
+
+task copySample << {
+
+    // CopySpecインスターフェース
+
+    copy {
+        // form がコピー元
+        // into がコピー先
+        from './'
+        into 'output'
+
+        // includeやexcludeで条件も指定できる
+        include '**/*.txt'
+        exclude 'output'
+
+        // includeEmptyDirs false で空ディレクトリを除外する
+        includeEmptyDirs false
+
+        // コピー時にrenameする場合renameクロージャを使う
+        rename { fileName ->
+            if (fileName == 'dummy.txt') {
+                fileName.replace('dummy', 'renamed-file')
+            }
+        }
+        // ファイルの内容を編集
+        filter { line ->
+            line.replaceAll 'VALUE_OBJECT_NAME', 'ConcreteVo'
+        }
+
+        // 入れ子もOK
+        into('hoge') {
+            from './output'
+            exclude 'hoge'
+        }
+    }
+}
