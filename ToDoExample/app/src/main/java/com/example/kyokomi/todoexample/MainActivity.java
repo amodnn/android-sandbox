@@ -2,16 +2,44 @@ package com.example.kyokomi.todoexample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Request request = new Request.Builder()
+                .url("http://www.lgtm.in/g")
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.e("", e.getLocalizedMessage(), e);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String htmlResponse = response.body().string();
+                Log.d("", htmlResponse);
+            }
+        });
     }
 
     @Override
