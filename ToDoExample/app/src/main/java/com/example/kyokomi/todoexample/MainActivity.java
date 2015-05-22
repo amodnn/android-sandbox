@@ -1,6 +1,5 @@
 package com.example.kyokomi.todoexample;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,19 +8,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private OkHttpClient client = new OkHttpClient();
+    @OnClick(R.id.imageButton)
+    void showLGTM() {
+        LGTMAsyncTask task = new LGTMAsyncTask();
+        task.execute();
+    }
+
+    @InjectView(R.id.imageButton)
+    ImageView mImageView;
 
     public class LGTMAsyncTask extends AsyncTask<String, Integer, Document> {
         @Override
@@ -38,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Document document) {
-            Elements elements = document.select("#imageUrl");
-            for (Element element : elements) {
-                Log.d("", element.val());
+            if (document != null) {
+                Elements elements = document.select("#imageUrl");
+                Log.d("", elements.get(0).val());
+
+                Picasso.with(MainActivity.this).load(elements.get(0).val()).into(mImageView);
             }
         }
     }
@@ -49,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        LGTMAsyncTask task = new LGTMAsyncTask();
-        task.execute();
+        ButterKnife.inject(this);
 
 //        Request request = new Request.Builder()
 //                .url("http://www.lgtm.in/g")
