@@ -25,6 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,17 +50,19 @@ public class TodoDetailActivity extends AppCompatActivity implements LoaderManag
 
     @OnClick(R.id.deletedButton)
     void onClickDeletedButton() {
+        // TODO: 確認ダイアログ出すとかしたほうが？そもそもリスト表示のほうでやりたさ
 //        getContentResolver().delete(TodoContentProvider.Contract.TODO_TABLE.contentUri, "id", new String[]{"", ""});
         Toast.makeText(this, "削除した", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.completedButton)
     void onClickCompletedButton() {
-//        ContentValues values = new ContentValues();
-//        values.clear();
-//        values.put(TodoContentProvider.Contract.TODO_TABLE.columns.get(1), mTitleTextView.getText().toString());
-//        values.put(TodoContentProvider.Contract.TODO_TABLE.columns.get(2), mDetailTextView.getText().toString());
-//        getContentResolver().insert(TodoContentProvider.Contract.TODO_TABLE.contentUri, values);
+        ContentValues values = new ContentValues();
+        values.clear();
+        values.put(TodoContentProvider.Contract.TODO_DETAIL_TABLE.columns.get(1), 1); // TODO: あとで
+        values.put(TodoContentProvider.Contract.TODO_DETAIL_TABLE.columns.get(2), new Date().getTime());
+        values.put(TodoContentProvider.Contract.TODO_DETAIL_TABLE.columns.get(3), "lgtm");
+        getContentResolver().insert(TodoContentProvider.Contract.TODO_DETAIL_TABLE.contentUri, values);
 
         Toast.makeText(this, "達成した", Toast.LENGTH_SHORT).show();
     }
@@ -98,7 +101,7 @@ public class TodoDetailActivity extends AppCompatActivity implements LoaderManag
     }
 
     private void initLoader() {
-        final String[] from = {"title"};
+        final String[] from = {"lgtm"};
         final int[] to = {android.R.id.text1};
         mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, from, to, 0);
         mDetailView.setAdapter(mAdapter);
@@ -139,7 +142,9 @@ public class TodoDetailActivity extends AppCompatActivity implements LoaderManag
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(getClass().getSimpleName(), "onCreateLoader called.");
-        return new CursorLoader(this, TodoContentProvider.Contract.TODO_TABLE.contentUri, null, null, null, null);
+        // TODO: あとで
+//        return new CursorLoader(this, TodoContentProvider.Contract.TODO_DETAIL_TABLE.contentUri, null, BaseColumns._ID, new String[]{"1"}, null);
+        return new CursorLoader(this, TodoContentProvider.Contract.TODO_DETAIL_TABLE.contentUri, null, null, null, null);
     }
 
     @Override

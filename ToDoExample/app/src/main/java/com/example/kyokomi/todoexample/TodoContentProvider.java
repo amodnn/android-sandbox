@@ -72,7 +72,9 @@ public class TodoContentProvider extends ContentProvider {
         /**
          * TABLE1テーブル.
          */
-        TODO_TABLE(BaseColumns._ID, "title", "detail");
+        TODO_TABLE(BaseColumns._ID, "title", "detail"),
+        TODO_DETAIL_TABLE(BaseColumns._ID, "todo_id", "complete_time", "lgtm", "lgtm_image"),
+        ;
 
         Contract(final String... columns) {
             this.columns = Collections.unmodifiableList(Arrays.asList(columns));
@@ -183,6 +185,8 @@ public class TodoContentProvider extends ContentProvider {
     static {
         sUriMatcher.addURI(AUTHORITY, Contract.TODO_TABLE.tableName, Contract.TODO_TABLE.allCode);
         sUriMatcher.addURI(AUTHORITY, Contract.TODO_TABLE.tableName + "/#", Contract.TODO_TABLE.byIdCode);
+        sUriMatcher.addURI(AUTHORITY, Contract.TODO_DETAIL_TABLE.tableName, Contract.TODO_DETAIL_TABLE.allCode);
+        sUriMatcher.addURI(AUTHORITY, Contract.TODO_DETAIL_TABLE.tableName + "/#", Contract.TODO_DETAIL_TABLE.byIdCode);
     }
 
     /**
@@ -226,6 +230,7 @@ public class TodoContentProvider extends ContentProvider {
             db.beginTransaction();
             try {
                 db.execSQL("CREATE TABLE todo_table (_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, detail TEXT)");
+                db.execSQL("CREATE TABLE todo_detail_table (_id INTEGER PRIMARY KEY AUTOINCREMENT, todo_id INTEGER, complete_time DATETIME, lgtm TEXT, lgtm_image BLOB)");
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
