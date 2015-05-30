@@ -1,14 +1,22 @@
 package com.example.kyokomi.todoexample;
 
+import android.app.LoaderManager;
+import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +31,12 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class TodoDetailActivity extends AppCompatActivity {
+public class TodoDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    @InjectView(R.id.detailList)
+    ListView mDetailView;
+
+    SimpleCursorAdapter mAdapter;
 
     @InjectView(R.id.imageButton)
     ImageButton mImageButton;
@@ -32,6 +45,23 @@ public class TodoDetailActivity extends AppCompatActivity {
     void showLGTM() {
         LGTMAsyncTask task = new LGTMAsyncTask();
         task.execute();
+    }
+
+    @OnClick(R.id.deletedButton)
+    void onClickDeletedButton() {
+//        getContentResolver().delete(TodoContentProvider.Contract.TODO_TABLE.contentUri, "id", new String[]{"", ""});
+        Toast.makeText(this, "削除した", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.completedButton)
+    void onClickCompletedButton() {
+//        ContentValues values = new ContentValues();
+//        values.clear();
+//        values.put(TodoContentProvider.Contract.TODO_TABLE.columns.get(1), mTitleTextView.getText().toString());
+//        values.put(TodoContentProvider.Contract.TODO_TABLE.columns.get(2), mDetailTextView.getText().toString());
+//        getContentResolver().insert(TodoContentProvider.Contract.TODO_TABLE.contentUri, values);
+
+        Toast.makeText(this, "達成した", Toast.LENGTH_SHORT).show();
     }
 
     public class LGTMAsyncTask extends AsyncTask<String, Integer, Document> {
@@ -59,10 +89,21 @@ public class TodoDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_detail);
         ButterKnife.inject(this);
+
+        initLoader();
+    }
+
+    private void initLoader() {
+        final String[] from = {"title"};
+        final int[] to = {android.R.id.text1};
+        mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, from, to, 0);
+        mDetailView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -93,5 +134,23 @@ public class TodoDetailActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(getClass().getSimpleName(), "onCreateLoader called.");
+        return new CursorLoader(this, TodoContentProvider.Contract.TODO_TABLE.contentUri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+        Log.d(getClass().getSimpleName(), "onLoadFinished called.");
+        mAdapter.swapCursor(c);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(getClass().getSimpleName(), "onLoaderReset called.");
+        mAdapter.swapCursor(null);
     }
 }

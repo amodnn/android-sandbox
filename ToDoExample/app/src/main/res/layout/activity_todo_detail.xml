@@ -8,10 +8,31 @@
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="達成"
+        android:id="@+id/completedButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="削除"
+        android:id="@+id/deletedButton"
+        android:layout_below="@+id/completedButton"
+        android:layout_alignEnd="@+id/detailList" />
+
+    <ListView
+        android:id="@+id/detailList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageButton" />
 
 </RelativeLayout>
